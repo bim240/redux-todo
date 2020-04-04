@@ -15,22 +15,24 @@ function handleAllMethod(state = [], action) {
         {
           text: action.text,
           completed: false,
-          id: Date.now()
-        }
+          id: Date.now(),
+        },
       ];
     case "remove":
-      return state.filter(list => list.id != action.id);
+      return state.filter((list) => list.id != action.id);
     case "checkbox":
-      return state.map(list => {
+      return state.map((list) => {
         if (list.id == action.id) {
           list.completed = !list.completed;
         }
         return list;
       });
     case "active":
-      return state.filter(list => list.completed == false);
+      return state.filter((list) => list.completed == false);
     case "all":
       return state;
+    case "completed":
+      return state.filter((list) => list.completed == false);
     default:
       return state;
   }
@@ -61,11 +63,14 @@ function filterActive() {
 function showAll() {
   redux.dispatch({ type: "all" });
 }
+function complete() {
+  redux.dispatch({ type: "completed" });
+}
 
 function view(state = []) {
   allList.innerHTML = "";
   // console.log(state);
-  state.map(oneList => {
+  state.map((oneList) => {
     // console.log(oneList);
     var singleList = document.createElement("div");
     singleList.setAttribute("id", `${oneList.id}`);
@@ -98,4 +103,4 @@ newList.addEventListener("keyup", addToList);
 allList.addEventListener("click", handleEventOnlist);
 active.addEventListener("click", filterActive);
 all.addEventListener("click", showAll);
-// complete.addEventListener("click", filterComplete);
+complete.addEventListener("click", filterComplete);
